@@ -3,6 +3,7 @@ from telegram import ReplyKeyboardMarkup
 import logging
 import os
 import Parameters
+import psutil
 
 folder = os.path.dirname(os.path.abspath(__file__)) + "/"
 with open(folder + "token.txt", "r") as token_file:
@@ -45,7 +46,7 @@ def check_user(user_id):
 
 def calc_fractal(parameters):
     arguments = parameters.to_string()
-    os.system("Fraktal1.exe " + arguments)
+    os.system("./picture_generator " + arguments)
 
 
 def get_fractal(bot, update):
@@ -152,7 +153,14 @@ def message(bot, update):
 dispatcher.add_handler(MessageHandler(Filters.text, message))
 
 
-
+# set program priority to low
+p = psutil.Process(os.getpid())
+if(os.name == 'nt'):
+	#Windows
+	p.nice(psutil.BELOW_NORMAL_PRIORITY_CLASS)
+elif(os.name == "posix"):
+	#Unix
+	p.nice(19)
 
 print("starting bot")
 updater.start_polling()
