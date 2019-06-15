@@ -46,7 +46,7 @@ def check_user(user_id):
 
 def calc_fractal(parameters):
     arguments = parameters.to_string()
-    os.system("./picture_generator " + arguments)
+    os.system(folder + "picture_generator " + arguments)
 
 
 def get_fractal(bot, update):
@@ -55,8 +55,8 @@ def get_fractal(bot, update):
     check_user(user)
     
     calc_fractal(user_parameters[user])
-    bot.send_document(chat_id=user, document=open('fraktal.png', 'rb'))
-    bot.send_photo(chat_id=user, photo=open("fraktal.png", "rb"))
+    bot.send_document(chat_id=user, document=open(folder + 'fraktal.png', 'rb'))
+    bot.send_photo(chat_id=user, photo=open(folder + "fraktal.png", "rb"))
 
 fractal_handler = CommandHandler("get_fractal", get_fractal)
 dispatcher.add_handler(fractal_handler)
