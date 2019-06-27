@@ -5,8 +5,11 @@ import os
 import Parameters
 import psutil
 
-folder = os.path.dirname(os.path.abspath(__file__)) + "/"
-with open(folder + "token.txt", "r") as token_file:
+cwd = os.getcwd()
+folder = os.path.dirname(os.path.abspath(__file__))
+assert cwd == folder, "Process has to be started from folder. Pls do it right"
+
+with open("token.txt", "r") as token_file:
     token = token_file.readline()
 updater = Updater(token=token) # Insert bot token here
 dispatcher = updater.dispatcher
@@ -46,7 +49,7 @@ def check_user(user_id):
 
 def calc_fractal(parameters):
     arguments = parameters.to_string()
-    os.system(folder + "picture_generator " + arguments)
+    os.system("./picture_generator " + arguments)
 
 
 def get_fractal(bot, update):
@@ -55,8 +58,8 @@ def get_fractal(bot, update):
     check_user(user)
     
     calc_fractal(user_parameters[user])
-    bot.send_document(chat_id=user, document=open(folder + 'fraktal.png', 'rb'))
-    bot.send_photo(chat_id=user, photo=open(folder + "fraktal.png", "rb"))
+    bot.send_document(chat_id=user, document=open('fraktal.png', 'rb'))
+    bot.send_photo(chat_id=user, photo=open("fraktal.png", "rb"))
 
 fractal_handler = CommandHandler("get_fractal", get_fractal)
 dispatcher.add_handler(fractal_handler)
