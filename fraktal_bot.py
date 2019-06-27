@@ -58,8 +58,11 @@ def get_fractal(bot, update):
     check_user(user)
     
     calc_fractal(user_parameters[user])
-    bot.send_document(chat_id=user, document=open('fraktal.png', 'rb'))
-    bot.send_photo(chat_id=user, photo=open("fraktal.png", "rb"))
+    try:
+        bot.send_document(chat_id=user, document=open('fraktal.png', 'rb'))
+        bot.send_photo(chat_id=user, photo=open("fraktal.png", "rb"))
+    except FileNotFoundError:
+        bot.send_message(chat_id=user, text="Couldn't find generated picture. The dev is probably an idiot")
 
 fractal_handler = CommandHandler("get_fractal", get_fractal)
 dispatcher.add_handler(fractal_handler)
